@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Personal Files
+# Pycharm
+.idea/ 
+
+# Course documents 
+*.zip
+*.7z
+*.docx
+*.pdf
+
+# The DataSet files are heavy, so I decided not to put them on Github
+Files/Docs/MHEALTHDATASET/mHealth_subject*
