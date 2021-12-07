@@ -46,7 +46,6 @@ def get_data(path, sep=',', txt=True) -> pd.DataFrame:
 	return data
 
 
-
 def get_nan(df, on="dataframe") -> np.ndarray:
 	"""
 	Get all the row which got Nan values
@@ -93,19 +92,11 @@ def get_specs(df, signal, dates, time_window_length, non_overlapping_length):
 	:param int non_overlapping_length: The number of different dates between two window following each other
 	:return pd.DataFrame: The dataframe of extracted specifications
 	"""
-	start = parser.parse(dates[0])  # Assuming that date[1] > date[0]
-	end = parser.parse(dates[1])
-	maximum = (end - start).days + 1  # The numbers of days +1 for the last day
 	res_data = []
 	feature_list = []
-	for i in range(0, maximum - time_window_length, non_overlapping_length):
-		# Create the mask of dates
-		first = start + datetime.timedelta(i)
-		last = first + datetime.timedelta(time_window_length)
-		mask = (df.index >= first) & (df.index < last)
-		
-		# Get a part of the dataframe that matches the mask
-		slice_df = df[signal].loc[mask]
+	for i in range(0, df.shape[0] - time_window_length, non_overlapping_length):
+
+
 		
 		# Get the specifications for this part
 		vector_features, feature_list = get_all_specs(slice_df)
