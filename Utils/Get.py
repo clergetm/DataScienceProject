@@ -94,16 +94,18 @@ def get_specs(df, signal, dates, time_window_length, non_overlapping_length):
 	"""
 	res_data = []
 	feature_list = []
+	y_data = []
 	for i in range(0, df.shape[0] - time_window_length, non_overlapping_length):
 
-
+		data = df[i:i+time_window_length]
 		
 		# Get the specifications for this part
-		vector_features, feature_list = get_all_specs(slice_df)
+		vector_features, feature_list = get_all_specs(data)
 		res_data.append(vector_features)
-	
+		y_data.append(df['Label'].loc[0])
+		
 	res_columns = [f"{feature}_{signal}" for feature in feature_list]
-	return pd.DataFrame(res_data, columns=res_columns)
+	return pd.DataFrame(res_data, columns=res_columns), y_data
 
 
 def get_specs_min(df):
