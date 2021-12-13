@@ -141,3 +141,4 @@ dmypy.json
 # The DataSet files are heavy, so I decided not to put them on Github
 Files/Docs/MHEALTHDATASET/TestSet/mHealth_subject*
 Files/Docs/MHEALTHDATASET/TrainSet/mHealth_subject*
+*.png
