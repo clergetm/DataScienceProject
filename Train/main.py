@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import zscore  # Normalize DataFrame
 
-from Utils.Get import get_data, get_duplicate, get_nan, get_specs
+from Utils.Get import get_data, get_duplicate, get_nan
 from Utils.Protocol import protocol
 
 ########################################################################################################################
@@ -20,6 +20,8 @@ files = [f"mHealth_subject{str(i)}.txt" for i in range(1, 2)]
 
 if __name__ == '__main__':
 	start_time = time.time()
+	
+	# One file containing one subject
 	for file in files:
 		# Create the dataFrame
 		dataset_path = path + file
@@ -72,11 +74,14 @@ if __name__ == '__main__':
 			flatten_activities.append(activity)
 		
 		print("X" * 100)
-	
+		#
 		# After the cleaning and the activities' creation, we can launch the protocol
-		protocol(flatten_activities, time_window_length=0, non_overlapping_length=0,
+		protocol(flatten_activities, time_window_length=30, non_overlapping_length=3,
 		         # split to remove the extension
-		         pickle_file=file.split(sep='.')[0], folder=file.split(sep='.')[0])
-	
+		         pickle_file=file.split(sep='.')[0], subject=file.split(sep='.')[0])
+
+		# # After the cleaning and the activities' creation, we can launch the protocol
+		# protocol(flatten_activities, time_window_length=60, non_overlapping_length=58,
+		#          pickle_file=file.split(sep='.')[0], folder_name=file.split(sep='.')[0],dim_reduc=2)
 	end_time = time.time()
 	print(f"total time = {end_time - start_time}")

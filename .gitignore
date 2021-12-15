@@ -142,3 +142,4 @@ dmypy.json
 Files/Docs/MHEALTHDATASET/TestSet/mHealth_subject*
 Files/Docs/MHEALTHDATASET/TrainSet/mHealth_subject*
 *.png
+*.csv
