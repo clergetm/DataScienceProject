@@ -1,12 +1,14 @@
 import time
-import glob
 
 import numpy as np
 import pandas as pd
-from scipy.stats import zscore  # Normalize DataFrame
 
-from Utils.Get import get_data, get_duplicate, get_nan
+from Utils.Get import get_data
+# from Utils.Graphics import plot_stats
 from Utils.Protocol import protocol
+
+from Utils.Utils import normalize  # Normalize DataFrame
+from Utils.Utils import to_flatten_df  # To flatten DataFrame
 
 ########################################################################################################################
 #                                                  USER PARAMETERS                                                     #
@@ -16,27 +18,30 @@ from Utils.Protocol import protocol
 path = "../Files/Docs/MHEALTHDATASET/TrainSet/"
 
 # List of files used as training set
-files = [f"mHealth_subject{str(i)}.txt" for i in range(1, 2)]
+subjects = [f"mHealth_subject{str(i)}" for i in range(1, 10)]
+subjects_list_df = []
+
+# Max number of instances for each dataset (will be changed below)
+# ceil_instances will be useful for flattening all the activity at the same amount of instances
+# So to flatten all subject's dataset
+ceil_instances = 99999999999999
+
+# Variables used in the protocol
+pickle_file = "TrainSet"
+folder_type = "Train"
 
 if __name__ == '__main__':
+	print("Starting main")
 	start_time = time.time()
-	
-	# One file containing one subject
-	for file in files:
-		# Create the dataFrame
-		dataset_path = path + file
-		df = get_data(dataset_path, sep="\\\t")
+	for subject in subjects:
 		
+		# Create the dataFrame
+		dataset_path = path + subject + ".txt"
+		df = get_data(dataset_path, sep="\\\t", txt=False)
 		################################################################################################################
 		#                                          DATA CLEANING                                                       #
 		################################################################################################################
-		
-		# print("Get information about duplicates and nan in the dataFrame")
-		# print("Nan: ")
-		# print(get_nan(df))  # No Nan Values
-		# print("Duplicates: ")
-		# print(get_duplicate(df))  # No Duplicates Values
-		
+
 		# Creating Classes
 		# The Label '0' need to be deleted : it corresponds to no class
 		df.drop(index=df[df['Label'] == 0].index, axis='index', inplace=True)
@@ -45,43 +50,53 @@ if __name__ == '__main__':
 		# Get each possible activity
 		activities_id = np.unique(df['Label'])
 		
-		# activity_min will be useful for flattening all the activity at the same amount of instances
-		activity_min = df.shape[0]  # shape[0] to initialize at a high value
-		
 		for id_value in activities_id:
 			activity = df[df['Label'] == id_value]
 			instances = activity.shape[0]  # Get the number of instances
 			
-			# Change the min value
-			activity_min = instances if instances < activity_min else activity_min
+			# Change the max value
+			ceil_instances = instances if instances < ceil_instances else ceil_instances
 			
 			# print(f"{id_value}: {instances}")
 			activities.append(activity)
 		
-		# Now that we have the activities and a minimum : we need to flatten them
-		flatten_activities = []
-
-		for activity in activities:
-			if activity.shape[0] > activity_min:
-				
-				#  Get the minimum number of instances chosen at random
-				activity = activity.sample(activity_min)
-				
-				# Normalizes DataFrame using the z score method
-				activity.apply(zscore)
-				
-			activity.reset_index(inplace=True, drop=True)  # Reset the index and not keep the previous one
-			flatten_activities.append(activity)
+		# Create a Dataframe that refers to the subject
+		df_subject = pd.concat(activities)
+		df_subject["ID"] = subject  # Create a column to indicate the ID of the subject
 		
-		print("X" * 100)
-		#
-		# After the cleaning and the activities' creation, we can launch the protocol
-		protocol(flatten_activities, time_window_length=30, non_overlapping_length=3,
-		         # split to remove the extension
-		         pickle_file=file.split(sep='.')[0], subject=file.split(sep='.')[0])
+		# To Flatten the DataFrame
+		df_subject = to_flatten_df(to_flat=df_subject, ceil=ceil_instances)
+		
+		# To normalize the DataFrame
+		df_subject = normalize(df_subject, minus_columns=2)  # Don't normalize 'Label' and 'ID'
+		
+		# Add this subject to the list of subjects
+		subjects_list_df.append(df_subject)
+	
+	df_subjects = pd.concat(subjects_list_df, ignore_index=True)
+	features = df_subjects.columns[:-2]
+	
+	####################################################################################################################
+	#                                  PROTOCOLS                                                                       #
+	####################################################################################################################
+	
+	# After the cleaning and the activities' creation, we can launch the protocol
 
-		# # After the cleaning and the activities' creation, we can launch the protocol
-		# protocol(flatten_activities, time_window_length=60, non_overlapping_length=58,
-		#          pickle_file=file.split(sep='.')[0], folder_name=file.split(sep='.')[0],dim_reduc=2)
+	# Get the stats
+	# print("Start plot Stats")
+	# plot_stats(subjects_list_df, features=features, save_path="../Files/Out/Stats/Train/")
+
+	print("Protocol 1")
+	protocol(subjects_list_df, time_window_length=100, non_overlapping_length=5,
+	         pickle_file=pickle_file, folder_type=folder_type)
+	
+	print("Protocol 2")
+	protocol(subjects_list_df, time_window_length=200, non_overlapping_length=5,
+	         pickle_file=pickle_file, folder_type=folder_type)
+	
+	print("Protocol 3")
+	protocol(subjects_list_df, time_window_length=200, non_overlapping_length=10,
+	         pickle_file=pickle_file, folder_type=folder_type)
+	
 	end_time = time.time()
 	print(f"total time = {end_time - start_time}")
