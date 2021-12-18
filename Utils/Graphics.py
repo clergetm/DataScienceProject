@@ -40,11 +40,8 @@ def plot_stats(subjects, features, save_path):
 			
 			# Plotting
 			to_plot = pd.DataFrame(tmp_subjects_sample_activity)
-			plt.figure(figsize=(10, 100))
 			to_plot.plot()
 			plt.title(label=f"Compare subjects on {activities_name[i]} / {feature}")
 			plt.savefig(fname=save_path + f"{label}_{activities_name[i]}_{feature}.png", dpi=100, format='png')
-			plt.clf()
-			plt.cla()
-			plt.close(plt.figure())
+			plt.close()
 			

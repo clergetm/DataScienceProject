@@ -7,7 +7,7 @@ import pandas as pd
 from Utils.Get import get_data  # Getter pd.DataFrame
 
 
-def data_cleaning(folder, subjects_names) -> list[pd.DataFrame]:
+def data_cleaning(folder, subjects_names) -> list:
 	"""
 	Create and clean the datasets
 	:param str folder: the path to the folder where the dataset files are saved

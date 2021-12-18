@@ -17,9 +17,9 @@ def train(time_window_length, non_overlapping_length, with_plot_stats=False) -> 
 	:param bool with_plot_stats: True if the user want to create the plots of the stats.
 		May cause drastic slowdown performance
 	:returns: x_data and y_data, x is the complete dataset and y the list of the class of each x's instance
-	:rtype (new_x_data, new_y_data): (pd.DataFrame, list)
+	:rtype (train_x_data, train_y_data): (pd.DataFrame, list)
 	"""
-	print("Starting main")
+	print("Starting Train")
 	start_time = time.time()
 	
 	####################################################################################################################
@@ -58,14 +58,14 @@ def train(time_window_length, non_overlapping_length, with_plot_stats=False) -> 
 		plot_stats(subjects_list_df, features=features, save_path="../Files/Out/Stats/Train/")
 	
 	print("- Launch Protocol")
-	x_data, y_data = protocol(subjects_list_df, time_window_length=time_window_length,
-	                          non_overlapping_length=non_overlapping_length,
-	                          pickle_file=pickle_file, folder_type=folder_type)
+	train_x_data, train_y_data = protocol(subjects_list_df, time_window_length=time_window_length,
+	                                      non_overlapping_length=non_overlapping_length,
+	                                      pickle_file=pickle_file, folder_type=folder_type)
 	
 	end_time = time.time()
-	print(f"Total Time = {end_time - start_time}")
+	print(f"Total Train Time = {end_time - start_time}")
 	
-	return x_data, y_data
+	return train_x_data, train_y_data
 
 
 if __name__ == "__main__":
