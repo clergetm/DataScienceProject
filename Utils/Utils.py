@@ -4,7 +4,73 @@ import os
 import numpy as np
 import pandas as pd
 
+from Utils.Get import get_data  # Getter pd.DataFrame
 
+
+def data_cleaning(folder, subjects_names) -> list[pd.DataFrame]:
+	"""
+	Create and clean the datasets
+	:param str folder: the path to the folder where the dataset files are saved
+	:param list subjects_names: the list of the files names
+	:return: a list that contain the dataset of each file
+	:rtype subjects_df: list
+	"""
+	####################################################################################################################
+	#                                             USER PARAMETERS                                                      #
+	####################################################################################################################
+
+	# result list that will be returned
+	subjects_df = []
+	
+	# Max number of instances for each dataset (will be changed below)
+	# ceil_instances will be useful for flattening all the activity at the same amount of instances
+	# So to flatten all subject's dataset
+	ceil_instances = 99999999999999
+	
+	####################################################################################################################
+	#                                              DATA CLEANING                                                       #
+	####################################################################################################################
+	
+	for subject in subjects_names:
+		
+		# Create the dataFrame
+		dataset_path = folder + subject + ".txt"
+		df = get_data(dataset_path, sep="\\\t", txt=False)
+		
+		# Creating Classes
+		# The Label '0' need to be deleted : it corresponds to no class
+		df.drop(index=df[df['Label'] == 0].index, axis='index', inplace=True)
+		
+		activities = []
+		# Get each possible activity
+		activities_id = np.unique(df['Label'])
+		
+		for id_value in activities_id:
+			activity = df[df['Label'] == id_value]
+			instances = activity.shape[0]  # Get the number of instances
+			
+			# Change the max value
+			ceil_instances = instances if instances < ceil_instances else ceil_instances
+
+			# Add the activity to the list
+			activities.append(activity)
+		
+		# Create a Dataframe that refers to the subject
+		df_subject = pd.concat(activities)
+		df_subject["ID"] = subject  # Create a column to indicate the ID of the subject
+		
+		# To Flatten the DataFrame
+		df_subject = to_flatten_df(to_flat=df_subject, ceil=ceil_instances)
+		
+		# To normalize the DataFrame
+		df_subject = normalize(df_subject, minus_columns=2)  # Don't normalize 'Label' and 'ID'
+		
+		# Add this subject to the list of subjects' list
+		subjects_df.append(df_subject)
+	
+	return subjects_df
+	
+	
 def delete_files(path):
 	"""
 	Delete files inside the given folder

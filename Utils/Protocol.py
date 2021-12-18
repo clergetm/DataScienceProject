@@ -60,7 +60,7 @@ def protocol(subjects, time_window_length, non_overlapping_length, pickle_file, 
 		pickle.dump([subject_x_data, subject_y_data], f)
 	
 	# Execute the protocol of Dimensionality reduction
-	print("Dimensionality Reduction Protocol")
+	print("   - Dimensionality Reduction Protocol")
 	new_x_data, new_y_data = dim_reduc_protocol(pickle_filepath=pickle_filepath,
 	                                            file_name=f"DimReduc{time_window_length}-{non_overlapping_length}",
 	                                            folder_type=folder_type)
