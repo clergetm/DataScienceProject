@@ -3,17 +3,17 @@ import pandas as pd
 from scipy.stats import stats
 
 
-def get_specs(df, time_window_length, non_overlapping_length):
+def get_specs(df, label, time_window_length, non_overlapping_length) -> (pd.DataFrame, list):
 	"""
 	Get a dataframe with specifications calculated
 	:param pd.DataFrame df: the dataframe used
+	:param int label: The Label of the activity
 	:param int time_window_length: The number of date in one window
 	:param int non_overlapping_length: The number of different dates between two window following each other
-	:return (pd.DataFrame, list): Tuple of the dataframe of extracted specifications and the list of y_data
+	:returns: Tuple of the dataframe of extracted specifications and the list of y_data
+	:rtype x_data, y_data:  (pd.DataFrame, list)
 	"""
 	
-	label = df['Label'].loc[0]
-	df = df.loc[:, df.columns != 'Label']  # Remove the Label column before calculation
 	x_data = []
 	feature_list = []
 	y_data = []
@@ -126,7 +126,7 @@ def get_specs_ptp(df):
 	return np.ptp(df, axis=0)
 
 
-def extract_specs(df):
+def extract_specs(df) -> (np.array, list):
 	"""
 	Get all specifications and their order
 	:param pd.DataFrame df: the currently used DataFrame

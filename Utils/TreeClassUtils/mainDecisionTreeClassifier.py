@@ -10,7 +10,6 @@ import utilPerformanceComputation
 ########################################################################################################################
 
 # Define the path of the dataset
-dataset_path_name = "..."
 
 # Create a class object that define parameters of the decision tree classifier
 decision_tree_parameters = utilDecisionTreeClassification.DecisionTreeParameters()
@@ -47,11 +46,12 @@ decision_tree_parameters.min_samples_leaf = 1
 """ The number of features to consider when looking for the best split
     The choices are :
                       If int, then consider max_features features at each split.
-                      If float, then max_features is a fraction and int(max_features * n_features) features are considered at each split.
+                      If float, then max_features is a fraction and int(max_features * n_features) features
+                                are considered at each split.
                       If “auto”, then max_features=sqrt(n_features).
                       If “sqrt”, then max_features=sqrt(n_features) (same as “auto”).
                       If “log2”, then max_features=log2(n_features).
-                      If None, then max_features=n_features. 
+                      If None, then max_features=n_features.
 
     Note: the search for a split does not stop until at least one valid partition of the node samples is found, even 
     if it requires to effectively inspect more than max_features features."""
@@ -67,8 +67,8 @@ decision_tree_parameters.max_leaf_nodes = None
 
 # Get the training and testing datasets (they should be split before to run this script)
 with open(dataset_path_name, 'rb') as f:
-    X_train, X_test, y_train, y_test = pickle.load(f)  # The order can change according the order that you pick when
-                                                       # you saved these variable
+    # The order can change according the order that you pick when you saved these variable
+    X_train, X_test, y_train, y_test = pickle.load(f)
 
 print("     The training dataset has : " + str(len(X_train)) + " instances\n")  # It work if it is a list
 print("     The testing dataset has : " + str(len(X_test)) + " instances\n")  # Same
@@ -84,7 +84,7 @@ for i in range(0, len(class_names), 1):
 # Convert the list of class names into an array to display results
 class_names = np.array(class_names)  # It was useful in a previous version of this code
 
-# Create a class object that define the performances container of the decision tree classifier
+# Create a class object that define the performances' container of the decision tree classifier
 performances = utilPerformanceComputation.Performances()
 
 ########################################################################################################################
