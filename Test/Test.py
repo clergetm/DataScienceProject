@@ -27,7 +27,7 @@ def test(time_window_length, non_overlapping_length, with_plot_stats=False) -> T
 	####################################################################################################################
 	
 	# path to the Testing dataset
-	path = "../Files/Docs/MHEALTHDATASET/TestSet/"
+	path = "Files/Docs/MHEALTHDATASET/TestSet/"
 	# The subject used as Testing subject
 	subject = "mHealth_subject10"
 	

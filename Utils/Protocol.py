@@ -29,7 +29,7 @@ def protocol(subjects, time_window_length, non_overlapping_length, pickle_file, 
 	# Variables
 	subject_x_data = pd.DataFrame()
 	subject_y_data = []
-	pickle_folder = f"../Files/Out/Pickles/{folder_type}/"
+	pickle_folder = f"Files/Out/Pickles/{folder_type}/"
 	pickle_filepath = f"{pickle_folder}{pickle_file}.pickle"
 	
 	# Delete previous files

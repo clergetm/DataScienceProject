@@ -27,7 +27,7 @@ def train(time_window_length, non_overlapping_length, with_plot_stats=False) -> 
 	####################################################################################################################
 	
 	# Path to the training dataset from the Train/Train.py file
-	path = "../Files/Docs/MHEALTHDATASET/TrainSet/"
+	path = "Files/Docs/MHEALTHDATASET/TrainSet/"
 	
 	# List of files used as training set
 	subjects_files = [f"mHealth_subject{str(i)}" for i in range(1, 10)]

@@ -21,8 +21,8 @@ def dim_reduc_protocol(pickle_filepath, file_name, folder_type) -> Tuple[pd.Data
 	#                                                 VARIABLES                                                        #
 	####################################################################################################################
 
-	pickle_path = f"../Files/Out/Pickles/{folder_type}/"
-	plot_path = f"../Files/Out/PicklesPlots/{folder_type}/"
+	pickle_path = f"Files/Out/Pickles/{folder_type}/"
+	plot_path = f"Files/Out/PicklesPlots/{folder_type}/"
 	pickle_file = pickle_path + file_name + ".pickle"
 	plot_file = plot_path + file_name + ".png"
 	
