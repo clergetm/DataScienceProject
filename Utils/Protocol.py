@@ -15,7 +15,7 @@ from Utils.ExtractionUtils.Extraction import get_specs
 
 def protocol(subjects, time_window_length, non_overlapping_length, pickle_file, folder_type) -> Tuple[pd.DataFrame, list]:
 	"""
-	The protocol of the Project
+	The main protocol of the Project to obtains the stats of each activity and execute the dimentionalityReduction protocol
 	:param list subjects: list of pd.DataFrame
 	:param int time_window_length: The number of date in one window
 	:param int non_overlapping_length: The number of different elements between two window following each other

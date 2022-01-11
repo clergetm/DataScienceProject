@@ -106,10 +106,10 @@ def k_cross_validation(time_window_length, non_overlapping_length, k, pickle_nam
 if __name__ == "__main__":
 	delete_files(pickle_folder)
 	# # 40/60
-	# train_test_multiple(200, 10, "1__train_test_200_10", 40)
+	train_test_multiple(200, 10, "1__train_test_200_10", 40)
 	# train_test_multiple(200, 20, "1__train_test_200_20", 40)
 	# train_test_multiple(100, 5, "1__train_test_100_5", 40)
-	#
+	# #
 	# # 50/50
 	# train_test_multiple(200, 10, "2__train_test_200_10", 50)
 	# train_test_multiple(200, 20, "2__train_test_200_20", 50)

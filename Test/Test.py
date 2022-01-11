@@ -54,7 +54,7 @@ def test(time_window_length, non_overlapping_length, with_plot_stats=False) -> T
 	if with_plot_stats:
 		print("- Start plot Stats")
 		features = df_subjects.columns[:-2]  # Get the columns except 'ID' and 'Label'
-		plot_stats(subjects_list_df, features=features, save_path="../Files/Out/Stats/Test/")
+		plot_stats(subjects_list_df, features=features, save_path="Files/Out/Stats/Test/")
 	
 	print("- Launch Protocol")
 	test_x_data, test_y_data = protocol(subjects_list_df, time_window_length=time_window_length,

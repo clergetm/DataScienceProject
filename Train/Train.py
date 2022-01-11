@@ -55,7 +55,7 @@ def train(time_window_length, non_overlapping_length, with_plot_stats=False) -> 
 	if with_plot_stats:
 		print("- Start plot Stats")
 		features = df_subjects.columns[:-2]  # Get the columns except 'ID' and 'Label'
-		plot_stats(subjects_list_df, features=features, save_path="../Files/Out/Stats/Train/")
+		plot_stats(subjects_list_df, features=features, save_path="Files/Out/Stats/Train/")
 	
 	print("- Launch Protocol")
 	train_x_data, train_y_data = protocol(subjects_list_df, time_window_length=time_window_length,

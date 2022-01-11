@@ -1,6 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot as plt
 
+from Utils.ExtractionUtils.Extraction import get_specs_mean
 from Utils.Utils import delete_files
 
 
@@ -37,6 +38,7 @@ def plot_stats(subjects, features, save_path):
 			for subject in subjects:
 				# Get the data of this subject for this feature
 				tmp_subjects_sample_activity[subject['ID'].loc[0]] = subject[subject['Label'] == label][feature]
+				#tmp_subjects_sample_activity[f"mean_{subject['ID'].loc[0]}"] = [get_specs_mean(subject[subject['Label'] == label][feature]) for _ in range(subject.shape[0])]
 			
 			# Plotting
 			to_plot = pd.DataFrame(tmp_subjects_sample_activity)
